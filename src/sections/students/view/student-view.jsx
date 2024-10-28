@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { useState } from 'react';
 
 import Card from '@mui/material/Card';
@@ -9,12 +10,14 @@ import TableBody from '@mui/material/TableBody';
 import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
+import { Dialog, DialogTitle, DialogContent } from '@mui/material';
 
 import { users } from 'src/_mock/user';
 
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 
+import StudentForm from '../student-form';
 import TableNoData from '../table-no-data';
 import TableEmptyRows from '../table-empty-rows';
 import StudentTableRow from '../student-table-row';
@@ -31,6 +34,10 @@ export default function StudentView() {
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const handleSort = (event, id) => {
     const isAsc = orderBy === id && order === 'asc';
@@ -94,7 +101,12 @@ export default function StudentView() {
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h4">Estudiantes</Typography>
 
-        <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}>
+        <Button
+          variant="contained"
+          color="inherit"
+          startIcon={<Iconify icon="eva:plus-fill" />}
+          onClick={handleOpen}
+        >
           Nuevo estudiante
         </Button>
       </Stack>
@@ -117,11 +129,11 @@ export default function StudentView() {
                 onRequestSort={handleSort}
                 onSelectAllClick={handleSelectAllClick}
                 headLabel={[
-                  { id: 'name', label: 'Name' },
-                  { id: 'company', label: 'Company' },
-                  { id: 'role', label: 'Role' },
-                  { id: 'isVerified', label: 'Verified', align: 'center' },
-                  { id: 'status', label: 'Status' },
+                  { id: 'name', label: 'Nombre' },
+                  { id: 'email', label: 'Correo' },
+                  { id: 'birthday', label: 'Cumpleaños' },
+                  { id: 'pendingClasses', label: 'Clases pendientes' },
+                  { id: 'status', label: 'Estado' },
                   { id: '' },
                 ]}
               />
@@ -132,11 +144,11 @@ export default function StudentView() {
                     <StudentTableRow
                       key={row.id}
                       name={row.name}
-                      role={row.role}
+                      email={row.email}
                       status={row.status}
-                      company={row.company}
+                      birthday={dayjs(row.birthday).format('DD-MM-YYYY')}
+                      pendingClasses={row.pendingClasses}
                       avatarUrl={row.avatarUrl}
-                      isVerified={row.isVerified}
                       selected={selected.indexOf(row.name) !== -1}
                       handleClick={(event) => handleClick(event, row.name)}
                     />
@@ -163,6 +175,12 @@ export default function StudentView() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Card>
+      <Dialog open={open} onClose={handleClose} aria-labelledby="package-form-dialog">
+        <DialogTitle id="package-form-dialog">Nuevo estudiante</DialogTitle>
+        <DialogContent>
+          <StudentForm />
+        </DialogContent>
+      </Dialog>
     </Container>
   );
 }

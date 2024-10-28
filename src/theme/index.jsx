@@ -2,7 +2,12 @@ import { useMemo } from 'react';
 import PropTypes from 'prop-types';
 
 import CssBaseline from '@mui/material/CssBaseline';
-import { createTheme, ThemeProvider as MUIThemeProvider } from '@mui/material/styles';
+import { CssVarsProvider as JoyCssVarsProvider } from '@mui/joy/styles';
+import {
+  createTheme,
+  THEME_ID as MATERIAL_THEME_ID,
+  ThemeProvider as MUIThemeProvider,
+} from '@mui/material/styles';
 
 import { palette } from './palette';
 import { shadows } from './shadows';
@@ -29,9 +34,11 @@ export default function ThemeProvider({ children }) {
   theme.components = overrides(theme);
 
   return (
-    <MUIThemeProvider theme={theme}>
-      <CssBaseline />
-      {children}
+    <MUIThemeProvider theme={{ [MATERIAL_THEME_ID]: theme }}>
+      <JoyCssVarsProvider>
+        <CssBaseline />
+        {children}
+      </JoyCssVarsProvider>
     </MUIThemeProvider>
   );
 }

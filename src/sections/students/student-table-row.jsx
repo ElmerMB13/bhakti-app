@@ -20,9 +20,9 @@ export default function StudentTableRow({
   selected,
   name,
   avatarUrl,
-  company,
-  role,
-  isVerified,
+  email,
+  birthday,
+  pendingClasses,
   status,
   handleClick,
 }) {
@@ -52,14 +52,14 @@ export default function StudentTableRow({
           </Stack>
         </TableCell>
 
-        <TableCell>{company}</TableCell>
+        <TableCell>{email}</TableCell>
 
-        <TableCell>{role}</TableCell>
+        <TableCell>{birthday}</TableCell>
 
-        <TableCell align="center">{isVerified ? 'Yes' : 'No'}</TableCell>
+        <TableCell>{pendingClasses}</TableCell>
 
         <TableCell>
-          <Label color={(status === 'banned' && 'error') || 'success'}>{status}</Label>
+          <Label color={(status === 'inactivo' && 'error') || 'success'}>{status}</Label>
         </TableCell>
 
         <TableCell align="right">
@@ -95,11 +95,11 @@ export default function StudentTableRow({
 
 StudentTableRow.propTypes = {
   avatarUrl: PropTypes.any,
-  company: PropTypes.any,
+  email: PropTypes.any,
   handleClick: PropTypes.func,
-  isVerified: PropTypes.any,
+  pendingClasses: PropTypes.any,
   name: PropTypes.any,
-  role: PropTypes.any,
+  birthday: PropTypes.any,
   selected: PropTypes.any,
   status: PropTypes.string,
 };
